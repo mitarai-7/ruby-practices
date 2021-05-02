@@ -58,7 +58,7 @@ if target_files.size.positive?
       io = File.open(File.expand_path(f))
       results.push(check_string(io.read, f))
     else
-      echo "error: #{f} fail open"
+      echo "error: #{f} fail to open"
     end
   end
 else
