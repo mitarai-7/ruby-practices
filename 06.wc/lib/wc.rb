@@ -52,21 +52,22 @@ opt.permute!(ARGV)
 target_files = ARGV != [] ? ARGV : ''
 
 results = []
-if target_files.size.positive?
+if target_files.any?
   target_files.each do |f|
     if File.readable?(File.expand_path(f))
-      io = File.open(File.expand_path(f))
-      results.push(check_string(io.read, f))
+      File.open(File.expand_path(f)) do |io|
+        results.push(check_string(io.read, f))
+      end
     else
       echo "error: #{f} fail to open"
     end
   end
 else
-  input = readlines.inject('') { |result, line| result + line }
+  input = readlines.join
   results.push(check_string(input, ''))
 end
 
-if results.size.positive?
+if results.any?
   total_results!(results) if target_files.size > 1
   pritty_print(results, params)
 else
